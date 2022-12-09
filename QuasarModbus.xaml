@@ -50,3 +50,137 @@ modbus:
         unit_of_measurement: A
         device_class: current
         scan_interval: 3600    
+
+
+switch:
+- platform: template
+  switches:
+    quasar_pause_resume:
+        friendly_name: "Quasar Pause/Resume"
+        availability_template: "{{ is_state('sensor.quasar_status', '4') or is_state('sensor.quasar_status', '1') or  is_state('sensor.quasar_status', '11') or  is_state('sensor.quasar_status', '2') }}"
+        value_template: "{{ is_state('sensor.quasar_status', '1') or is_state('sensor.quasar_status', '11') }}"
+        icon_template: mdi:ev-station
+        turn_on:
+          - service: modbus.write_register
+            data_template:
+                hub: "Quasar"
+                unit: 1
+                address: 81
+                value: 1
+          - service: modbus.write_register
+            data_template:
+                hub: "Quasar"
+                unit: 1
+                address: 257
+                value: 1
+          - service: modbus.write_register
+            data_template:
+                hub: "Quasar"
+                unit: 1
+                address: 81
+                value: 0
+        turn_off:
+          - service: modbus.write_register
+            data_template:
+                hub: "Quasar"
+                unit: 1
+                address: 81
+                value: 1
+          - service: modbus.write_register
+            data_template:
+                hub: "Quasar"
+                unit: 1
+                address: 257
+                value: 2
+          - service: modbus.write_register
+            data_template:
+                hub: "Quasar"
+                unit: 1
+                address: 81
+                value: 0
+
+template:
+      - name: "Quasar Charging Current"
+      state: '{{states("sensor.quasar_registers_2xx_2")|int(default=0)}}'
+      unit_of_measurement: A
+      device_class: current
+    - name: "Quasar Status Description"
+      state: >
+          {% if is_state('sensor.quasar_status', '0') %}
+            Ready
+          {% elif is_state('sensor.quasar_status', '1') %}
+            Charging
+          {% elif is_state('sensor.quasar_status', '2') %}
+            Waiting for car demand
+          {% elif is_state('sensor.quasar_status', '4') %}
+            Paused
+          {% elif is_state('sensor.quasar_status', '11') %}
+            Discharging
+          {% else %}
+            Unknown {{states('sensor.quasar_status')}}
+          {% endif %}  
+      icon: >
+          {% if is_state('sensor.quasar_status', '0') %}
+            mdi:power-plug-off
+          {% elif is_state('sensor.quasar_status', '4') %}
+            mdi:car
+             {% else %}
+             mdi:ev-station
+          {% endif %}  
+
+
+automations action example to set the charge rate (this could also be tied to a number helper that you set the value of and use that as a trigger to send the modbus commands:
+
+alias: Quasar - set dynamic charger rate
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - sensor.elec_quasar_demand_amps
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+condition:
+  - condition: state
+    entity_id: sensor.quasar_status_description
+    state:
+      - Charging
+      - Discharging
+  - condition: state
+    entity_id: input_boolean.charge_car_now
+    state: "off"
+action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: modbus.write_register
+    data_template:
+      hub: Quasar
+      unit: 1
+      address: 81
+      value: 1
+  - service: modbus.write_register
+    data_template:
+      hub: Quasar
+      unit: 1
+      address: 258
+      value: |-
+        {% if states('sensor.elec_quasar_demand_amps')|int < 0  %}
+          {{   65536 + states('sensor.elec_quasar_demand_amps')|int  }}
+        {% elif states('sensor.elec_quasar_demand_amps')|int > 0 %}
+          {{states('sensor.elec_quasar_demand_amps')|int }}
+        {% else %}
+          {{ 65536-3 }}
+        {% endif %}
+  - service: modbus.write_register
+    data_template:
+      hub: Quasar
+      unit: 1
+      address: 81
+      value: 0
+mode: restart
+
+
