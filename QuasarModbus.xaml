@@ -1,0 +1,52 @@
+modbus:
+  - name: "Quasar"
+    close_comm_on_error: true
+    type: tcp
+    host: 172.16.75.18
+    port: 502
+    timeout: 2
+    sensors:
+      - name: Quasar Registers 2xx
+        data_type: int16
+        address: 256
+        scan_interval: 5
+        slave: 1
+        unique_id: quasar_sn_2xx
+        slave_count: 4
+        count: 5
+      - name: "Quasar Status"
+        data_type: uint16
+        address: 537
+        scan_interval: 5
+        slave: 1
+        unique_id: quasar_sn_537
+      - name: "Quasar Battery State"
+        data_type: uint16
+        address: 538
+        slave: 1
+        unique_id: quasar_sn_538
+        state_class: measurement
+        unit_of_measurement: '%'
+        device_class: battery
+      - name: "Quasar Power"
+        address: 526
+        slave: 1
+        unique_id: quasar_sn_526
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: W
+      - name: "Quasar Mains Voltage"
+        address: 522
+        slave: 1
+        unique_id: quasar_sn_522 
+        state_class: measurement
+        unit_of_measurement: V
+        device_class: voltage
+        scan_interval: 60
+      - name: "Quasar Max Rate"
+        address: 512
+        slave: 1
+        unique_id: quasar_sn_512 
+        unit_of_measurement: A
+        device_class: current
+        scan_interval: 3600    
