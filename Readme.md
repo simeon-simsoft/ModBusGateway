@@ -5,7 +5,7 @@ Modbus TCP to Modbus RTU gateway (adapted for Alpha ESS)
 This is my Modbus TCP to Modbus RTU gateway written in Python.
 I run it on a [BeagleBone Black](http://beagleboard.org/black) equiped with a USB Modbus RS485 converter to communicate with my Alpha ESS. I salvaged these components from the Crowdcharge controller used with the Wallbox Quasar v2g trial.
 
-The gateway receives a ModbusTCP frame, translates it into a ModbusRTU frame, takes the ModbusRTU response and converts that into the ModbusTCP response for the initial request.
+The gateway receives a ModbusTCP frame, translates it into a ModbusRTU frame, takes the ModbusRTU response and converts that into the ModbusTCP response for the initial request. I have modified this to also support writing registers too.
 
 See the file [AlphaModbus.xaml](https://github.com/simeon-simsoft/ModBusGateway/blob/master/AlphaModbus.xaml) for configuration for Home Assistant when using the Alpha ESS battery system
 
