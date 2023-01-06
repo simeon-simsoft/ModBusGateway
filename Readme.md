@@ -3,7 +3,7 @@ Modbus TCP to Modbus RTU gateway (adapted for Alpha ESS)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](http://creativecommons.org/licenses/by-nc/4.0/)  
 
 This is my Modbus TCP to Modbus RTU gateway written in Python.
-I run it on a [BeagleBone Green](http://beagleboard.org/Green) equiped with a [Waveshare CAN RS485 Cape](www.waveshare.com/wiki/RS485_CAN_CAPE) to communicate with my Alpha ESS.
+I run it on a [BeagleBone Black](http://beagleboard.org/black) equiped with a USB Modbus RS485 converter to communicate with my Alpha ESS. I salvaged these components from the Crowdcharge controller used with the Wallbox Quasar v2g trial.
 
 The gateway receives a ModbusTCP frame, translates it into a ModbusRTU frame, takes the ModbusRTU response and converts that into the ModbusTCP response for the initial request.
 
