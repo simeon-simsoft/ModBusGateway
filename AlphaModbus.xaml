@@ -1,0 +1,156 @@
+ - name: "AlphaESS"
+    close_comm_on_error: false
+    type: tcp
+    host: 172.16.75.27
+    port: 11507
+    timeout: 4
+    close_comm_on_error: true
+    sensors:
+      - name: "AlphaESS Battery State"
+        data_type: uint16
+        address: 258
+        slave: 85
+        unique_id: alpha_soc
+        state_class: measurement
+        unit_of_measurement: '%'
+        device_class: battery
+        scale: 0.1
+        precision: 1
+        scan_interval: 30
+      - name: "AlphaESS Max Charge Power"
+        data_type: uint16
+        address: 300
+        slave: 85
+        unique_id: alpha_max_charge_power
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: W
+        scan_interval: 120
+      - name: "AlphaESS Max Discharge Power"
+        data_type: uint16
+        address: 301
+        slave: 85
+        unique_id: alpha_max_discharge_power
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: W
+        scan_interval: 120
+      - name: "AlphaESS Inverter Power"
+        data_type: int16
+        address: 294
+        slave: 85
+        scale: -1
+        unique_id: alpha_inverter_power
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: W
+        scan_interval: 10
+      - name: "AlphaESS Min Cell Temperature"
+        data_type: int16
+        address: 269
+        slave: 85
+        unique_id: alpha_cell_temp_min
+        state_class: measurement
+        unit_of_measurement: '°C'
+        device_class: temperature
+        scale: 0.1
+        scan_interval: 120
+        precision: 1
+      - name: "AlphaESS Inverter Temperature"
+        data_type: uint16
+        address: 0x435
+        slave: 85
+        unique_id: alpha_inverter_temp
+        state_class: measurement
+        unit_of_measurement: '°C'
+        device_class: temperature
+        scale: 0.1
+        scan_interval: 120
+        precision: 1
+      - name: "AlphaESS Battery Charge Energy"
+        data_type: uint32
+        address: 288
+        slave: 85
+        unique_id: alpha_charge_energy
+        state_class: total_increasing
+        unit_of_measurement: 'kWh'
+        device_class: energy
+        scale: 0.1
+        scan_interval: 120
+        precision: 1
+      - name: "AlphaESS Battery Discharge Energy"
+        data_type: uint32
+        address: 290
+        slave: 85
+        unique_id: alpha_discharge_energy
+        state_class: total_increasing
+        unit_of_measurement: 'kWh'
+        device_class: energy
+        scale: 0.1
+        scan_interval: 120
+        precision: 1
+      - name: "AlphaESS Schedule Registers"
+        data_type: uint16
+        address: 2127
+        scan_interval: 60
+        slave: 85
+        unique_id: alpha_reg_schedules
+        slave_count: 10
+        count: 11
+      - name: "AlphaESS Grid Power"
+        address: 27
+        data_type: int32
+        slave: 85
+        unique_id: alpha_grid_power
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: W
+        scan_interval: 10
+      - name: "AlphaESS Solar Power"
+        address: 155
+        data_type: int32
+        slave: 85
+        unique_id: alpha_solar_power
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: W
+        scan_interval: 10
+      - name: "AlphaESS Dispatch Start"
+        address: 0x880
+        data_type: uint16
+        slave: 85
+        unique_id: alpha_dispatch_start
+        scan_interval: 10
+      - name: "AlphaESS Dispatch Power"
+        address: 0x881
+        data_type: int32
+        slave: 85
+        unique_id: alpha_dispatch_power
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: W
+        scan_interval: 30
+      - name: "AlphaESS Dispatch SoC"
+        address: 0x886
+        data_type: uint16
+        slave: 85
+        unique_id: alpha_dispatch_soc
+        state_class: measurement
+        device_class: battery
+        unit_of_measurement: '%'
+        scan_interval: 30
+        scale: 0.4
+      - name: "AlphaESS Dispatch Duration"
+        address: 0x887
+        data_type: uint32
+        slave: 85
+        unique_id: alpha_dispatch_time
+        unit_of_measurement: 's'
+        scan_interval: 30
+      - name: "AlphaESS Dispatch Mode"
+        address: 0x885
+        data_type: uint16
+        slave: 85
+        unique_id: alpha_dispatch_mode
+        scan_interval: 30
+
