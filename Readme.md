@@ -7,7 +7,7 @@ I run it on a [BeagleBone Green](http://beagleboard.org/Green) equiped with a [W
 
 The gateway receives a ModbusTCP frame, translates it into a ModbusRTU frame, takes the ModbusRTU response and converts that into the ModbusTCP response for the initial request.
 
-See the file AlphaModbus.xaml for configuration for Home Assistant when using the Alpha ESS battery system
+See the file [AlphaModbus.xaml](https://github.com/simeon-simsoft/ModBusGateway/blob/master/AlphaModbus.xaml) for configuration for Home Assistant when using the Alpha ESS battery system
 
 How to use:
 ```
