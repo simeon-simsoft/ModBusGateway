@@ -1,3 +1,4 @@
+modbus: 
  - name: "AlphaESS"
     close_comm_on_error: false
     type: tcp
@@ -154,3 +155,55 @@
         unique_id: alpha_dispatch_mode
         scan_interval: 30
 
+
+switch:
+- platform: template
+  switches:
+    alphaess_grid_charge:
+        friendly_name: "AlphaESS Grid Charge"
+        availability_template: "{{ is_state('sensor.alphaess_dispatch_start', '1') or is_state('sensor.alphaess_dispatch_start', '0') }}"
+        value_template: "{{ is_state('sensor.alphaess_dispatch_start', '1')}}"
+        icon_template: mdi:home-battery
+        turn_on:
+          # dispatch start
+          - service: modbus.write_register
+            data_template:
+                hub: "AlphaESS"
+                unit: 85
+                address: 0x880
+                value: [1]
+          # dispatch power
+          - service: modbus.write_register
+            data_template:
+                hub: "AlphaESS"
+                unit: 85
+                address: 0x881
+                value: [0,29000]
+          # dispatch soc
+          - service: modbus.write_register
+            data_template:
+                hub: "AlphaESS"
+                unit: 85
+                address: 0x886
+                value: [250]
+          # dispatch duration
+          - service: modbus.write_register
+            data_template:
+                hub: "AlphaESS"
+                unit: 85
+                address: 0x887
+                value: [0, 14400]
+          # dispatch mode
+          - service: modbus.write_register
+            data_template:
+                hub: "AlphaESS"
+                unit: 85
+                address: 0x885
+                value: [2]
+        turn_off:
+          - service: modbus.write_register
+            data_template:
+                hub: "AlphaESS"
+                unit: 85
+                address: 0x880
+                value: [0]
